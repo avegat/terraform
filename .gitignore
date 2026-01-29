@@ -1,0 +1,8 @@
+# Ignorar la carpeta de dependencias (proveedores y módulos descargados)
+.terraform/
+
+# Ignorar los archivos de estado (contienen información sensible de tu infraestructura)
+*.tfstate
+*.tfstate.backup
+*.tfstate.lock.info
+.terraform.lock.hcl
