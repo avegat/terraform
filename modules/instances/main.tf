@@ -1,19 +1,26 @@
-# --- GRUPOS DE SEGURIDAD ---
+# --- GRUPO DE SEGURIDAD UNIFICADO ---
 
-resource "aws_security_group" "nginx_sg" {
-  name = "nginx_sg"
+resource "aws_security_group" "web_sg" {
+  name        = "web_sg"
+  description = "Security group for Nginx and Nodejs on same machine"
+
+  # Entrada HTTP (Nginx) - Abierto al mundo
   ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  # Entrada SSH - Abierto (puedes restringir la IP si quieres seguridad extra)
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] 
+    cidr_blocks = ["0.0.0.0/0"]
   }
+
+  # Salida - Permitir todo (necesario para descargar paquetes/updates)
   egress {
     from_port   = 0
     to_port     = 0
@@ -22,54 +29,20 @@ resource "aws_security_group" "nginx_sg" {
   }
 }
 
+# --- INSTANCIA UNICA ---
 
-resource "aws_security_group" "node_sg" {
-  name = "node_sg"
-  ingress {
-    from_port       = 3000
-    to_port         = 3000
-    protocol        = "tcp"
-    security_groups = [aws_security_group.nginx_sg.id] 
-  }
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
-# --- INSTANCIAS ---
-
-
-resource "aws_instance" "node_app" {
+resource "aws_instance" "web_server" {
   ami                         = var.ami_id
   instance_type               = "t2.micro"
-  vpc_security_group_ids      = [aws_security_group.node_sg.id]
+  vpc_security_group_ids      = [aws_security_group.web_sg.id]
   key_name                    = var.key_name
   associate_public_ip_address = true 
 
-  user_data = templatefile("${path.root}/scripts/node-image-pull.sh", {})
-
-  tags = { Name = "${var.instance_name}-node" }
-}
-
-resource "aws_instance" "nginx_proxy" {
-  ami                         = var.ami_id
-  instance_type               = "t2.micro"
-  vpc_security_group_ids      = [aws_security_group.nginx_sg.id]
-  key_name                    = var.key_name
-  associate_public_ip_address = true 
-
-  user_data = templatefile("${path.root}/scripts/nginx-setup.sh", {
-    node_ip = aws_instance.node_app.private_ip
+  # LLAMAMOS A UN SCRIPT UNIFICADO
+  # Ya no pasamos la variable node_ip, porque ahora es localhost
+  user_data = templatefile("${path.root}/scripts/nodejs-nginx-setup.sh", {
+     mongodb_ip = "${var.mongo_ip}"
   })
 
-  tags = { Name = "${var.instance_name}-nginx" }
+  tags = { Name = "${var.instance_name}-fullstack" }
 }

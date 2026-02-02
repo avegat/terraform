@@ -19,6 +19,7 @@ variable "user_data_script" {
   default     = "" 
 }
 
+variable "mongo_ip"{type = string}
 
 variable "key_name" {
   description = "key name"
