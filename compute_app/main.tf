@@ -27,6 +27,7 @@ resource "aws_security_group" "web_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  vpc_id = var.vpc_id
 }
 
 # --- INSTANCIA UNICA ---
@@ -43,6 +44,6 @@ resource "aws_instance" "web_server" {
   user_data = templatefile("${path.root}/scripts/nodejs-nginx-setup.sh", {
      mongodb_ip = "${var.mongo_ip}"
   })
-
+  subnet_id = var.subnet_id
   tags = { Name = "${var.instance_name}-fullstack" }
 }

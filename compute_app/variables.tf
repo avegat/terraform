@@ -26,3 +26,13 @@ variable "key_name" {
   type        = string
   default     = "" 
 }
+
+variable "vpc_id" {
+  description = "ID de la VPC donde se desplegará la app"
+  type        = string
+}
+
+variable "subnet_id" {
+  description = "ID de la Subnet donde vivirá la instancia"
+  type        = string
+}

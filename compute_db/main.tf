@@ -23,7 +23,7 @@ resource "aws_instance" "mongodb" {
     systemctl start docker
     systemctl enable docker
 
-    docker run -d  --name mongodb-6 -p 27017:27017   -e MONGO_INITDB_ROOT_USERNAME=admin  -e MONGO_INITDB_ROOT_PASSWORD=pass  -v mongo_data:/data/db mongo:6.0
+    docker run -d  --name mongodb-6 -p 27017:27017   -e MONGO_INITDB_ROOT_USERNAME=admin  -e MONGO_INITDB_ROOT_PASSWORD=m1Pa55  -v mongo_data:/data/db mongo:6.0
 
   EOF
 }

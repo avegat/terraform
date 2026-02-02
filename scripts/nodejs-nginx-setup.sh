@@ -23,7 +23,7 @@ usermod -aG docker ubuntu
 # 4. Crear archivo .env
 cat <<EOF > /home/ubuntu/.env
 PORT=3000
-MONGOCONN=mongodb://admin:pass@${mongodb_ip}/unir?authSource=admin
+MONGOCONN=mongodb://admin:m1Pa55@${mongodb_ip}/unir?authSource=admin
 NODE_ENV=production
 EOF
 chown ubuntu:ubuntu /home/ubuntu/.env

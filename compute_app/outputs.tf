@@ -12,3 +12,8 @@ output "instancia_ip_privada" {
   description = "IP privada de la maquina unificada"
   value       = aws_instance.web_server.private_ip
 }
+
+output "instancia_id" {
+  description = "ID de la instancia EC2 para adjuntar al Target Group"
+  value       = aws_instance.web_server.id
+}
