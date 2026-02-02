@@ -23,7 +23,7 @@ usermod -aG docker ubuntu
 # 4. Crear archivo .env
 cat <<EOF > /home/ubuntu/.env
 PORT=3000
-MONGOCONN=mongodb://:@${mongodb_ip}/database?authSource=admin
+MONGOCONN=mongodb://admin:pass@${mongodb_ip}/unir?authSource=admin
 NODE_ENV=production
 EOF
 chown ubuntu:ubuntu /home/ubuntu/.env
@@ -31,7 +31,7 @@ chown ubuntu:ubuntu /home/ubuntu/.env
 echo less /home/ubuntu/.env
 
 # 5. Desplegar Contenedor Node.js
-docker pull avegat92/nodejs-database:1.0.1
+docker pull avegat92/nodejs-database:1.0.0
 docker stop node-app || true
 docker rm node-app || true
 

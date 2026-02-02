@@ -19,11 +19,11 @@ resource "aws_instance" "mongodb" {
     apt-get update -y
     apt-get install -y docker-ce
 
-
+    
     systemctl start docker
     systemctl enable docker
 
-    docker run -d  --name mongodb-6 -p 27017:27017   -e MONGO_INITDB_ROOT_USERNAME=  -e MONGO_INITDB_ROOT_PASSWORD=  -v mongo_data:/data/db mongo:6.0
+    docker run -d  --name mongodb-6 -p 27017:27017   -e MONGO_INITDB_ROOT_USERNAME=admin  -e MONGO_INITDB_ROOT_PASSWORD=pass  -v mongo_data:/data/db mongo:6.0
 
   EOF
 }
