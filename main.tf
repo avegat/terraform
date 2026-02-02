@@ -1,3 +1,7 @@
+module "network" {
+  source = "./network"
+}
+
 
 
 module "compute_db" {
@@ -14,3 +18,4 @@ module "compute_app" {
   instance_name = "mean-stack"
   mongo_ip      = module.compute_db.mongodb_private_ip
 }
+
