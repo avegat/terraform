@@ -40,6 +40,8 @@ module "compute_db" {
   aws_region    = "us-east-1"
   ami_id        = "ami-0b6c6ebed2801a5cb"
   instance_name = "mongo-server"
+  vpc_id        = module.networking.vpc_id
+  subnet_id     = module.networking.public_subnets[1]
 }
 
 module "compute_app" {
